@@ -1,5 +1,6 @@
 const container = document.getElementById("grid-container");
 let currentGridSize = 16;
+
 //function that will create a grid of squares that will change colour when hovered
 //parameter will take a number which will be used to decide size of the grid
 function createGrid(size) {
@@ -25,7 +26,11 @@ function createGrid(size) {
       row.appendChild(square);
       //add event listener that will add a class ("square-hover" which changes the colour) whenever the square is hovered
       square.addEventListener("mouseover", () => {
-        square.classList.add("square-hover");
+        if (
+          window.getComputedStyle(square).backgroundColor === "rgb(255, 0, 0)"
+        ) {
+          square.style.backgroundColor = `rgb(${randomNumber()}, ${randomNumber()}, ${randomNumber()})`;
+        }
       });
     }
     //appends the whole row to the container
@@ -37,7 +42,11 @@ function resetGrid(gridSize) {
   while (container.hasChildNodes()) {
     container.removeChild(container.firstChild);
   }
-  createGrid(gridSize);
+  createGrid(parseFloat(gridSize));
+}
+
+function randomNumber() {
+  return Math.floor(Math.random() * 255);
 }
 
 //creates initial grid with default size of 16
@@ -56,11 +65,11 @@ sizeBtn.addEventListener("click", () => {
     "What size would you like the grid to be? (24 = 24x24)"
   );
   gridSize = gridSize > 100 ? 100 : gridSize;
-  createGrid(gridSize);
+  createGrid(parseFloat(gridSize));
 });
 
 //button to reset grid
 const resetBtn = document.querySelector(".reset-btn");
 resetBtn.addEventListener("click", () => {
-  resetGrid(currentGridSize);
+  resetGrid(parseFloat(currentGridSize));
 });
