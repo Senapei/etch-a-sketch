@@ -1,8 +1,9 @@
 const container = document.getElementById("grid-container");
-
+let currentGridSize = 16;
 //function that will create a grid of squares that will change colour when hovered
 //parameter will take a number which will be used to decide size of the grid
 function createGrid(size) {
+  currentGridSize = size;
   //gets the containers width (only the number - not the "px")
   const containerWidth =
     parseFloat(window.getComputedStyle(container).width) / size;
@@ -32,9 +33,17 @@ function createGrid(size) {
   }
 }
 
+function resetGrid(gridSize) {
+  while (container.hasChildNodes()) {
+    container.removeChild(container.firstChild);
+  }
+  createGrid(gridSize);
+}
+
 //creates initial grid with default size of 16
 createGrid(16);
 
+//button for grid size
 const sizeBtn = document.getElementsByClassName("size-btn")[0];
 //creates event handler on button to create grid of any size
 sizeBtn.addEventListener("click", () => {
@@ -43,5 +52,15 @@ sizeBtn.addEventListener("click", () => {
     container.removeChild(container.firstChild);
   }
   //creates the grid of any size using the prompt
-  createGrid(prompt("What size would you like the grid to be? (24 = 24x24)"));
+  let gridSize = prompt(
+    "What size would you like the grid to be? (24 = 24x24)"
+  );
+  gridSize = gridSize > 100 ? 100 : gridSize;
+  createGrid(gridSize);
+});
+
+//button to reset grid
+const resetBtn = document.querySelector(".reset-btn");
+resetBtn.addEventListener("click", () => {
+  resetGrid(currentGridSize);
 });
